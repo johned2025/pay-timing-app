@@ -26,7 +26,7 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const result = await sendOtp(email, inviteCode, window.location.origin + '/auth/callback')
+    const result = await sendOtp(email, inviteCode)
     setLoading(false)
     if (result.error) { setError(result.error); return }
     setSent(true)
