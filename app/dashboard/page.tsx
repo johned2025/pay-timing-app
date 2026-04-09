@@ -159,7 +159,7 @@ export default function DashboardPage() {
         {/* header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl font-bold">Hello, {profile?.name}</h1>
+            <h1 className="text-xl font-bold text-gray-900">Hello, {profile?.name}</h1>
             <p className="text-sm text-gray-500">
               {session ? 'Session in progress' : 'No active session'}
             </p>
