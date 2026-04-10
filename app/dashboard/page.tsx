@@ -116,9 +116,16 @@ export default function DashboardPage() {
 
   async function submitSession() {
     if (!session) return
-    const totalMinutes = entries.reduce((sum, e) => sum + (e.duration_minutes ?? 0), 0)
+    // delete any incomplete entries (clocked in but never clocked out)
+    await supabase
+      .from('work_entries')
+      .delete()
+      .eq('session_id', session.id)
+      .is('stopped_at', null)
+    const completed = entries.filter(e => e.stopped_at)
+    const totalMinutes = completed.reduce((sum, e) => sum + (e.duration_minutes ?? 0), 0)
     const totalHours = totalMinutes / 60
-    const totalPay = entries.reduce((sum, e) => sum + ((e.duration_minutes ?? 0) / 60) * e.hourly_rate, 0)
+    const totalPay = completed.reduce((sum, e) => sum + ((e.duration_minutes ?? 0) / 60) * e.hourly_rate, 0)
     await supabase
       .from('work_sessions')
       .update({ status: 'submitted', ended_at: new Date().toISOString(), total_hours: totalHours, total_pay: totalPay })

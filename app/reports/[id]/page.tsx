@@ -90,26 +90,27 @@ export default function ReportDetailPage() {
   }
 
   function buildPlainText(): string {
-    if (!report) return ''
+    if (!report || sessions.length === 0) return ''
     const lines: string[] = []
-    lines.push(`Report — ${formatDate(report.created_at)}`)
-    lines.push(`Total: ${grandHours.toFixed(1)}h  $${grandTotal.toFixed(2)}`)
+    const firstDate = formatDate(sessions[0].started_at)
+    const lastDate = formatDate(sessions[sessions.length - 1].started_at)
+    const dateRange = firstDate === lastDate ? firstDate : `${firstDate} – ${lastDate}`
+    lines.push(`Report: ${dateRange}`)
     lines.push('')
     for (const session of sessions) {
       lines.push(`Session: ${formatDate(session.started_at)}`)
       for (const entry of session.entries) {
-        const start = formatTime(entry.started_at)
-        const end = entry.stopped_at ? formatTime(entry.stopped_at) : '—'
         const dur = entry.duration_minutes ? formatDuration(entry.duration_minutes) : '—'
         const earn = entry.duration_minutes
           ? ((entry.duration_minutes / 60) * entry.hourly_rate).toFixed(2)
           : '0.00'
-        lines.push(`  ${start} – ${end}  (${dur})  @$${entry.hourly_rate}/hr  $${earn}`)
+        lines.push(`  ${dur}  @$${entry.hourly_rate}/hr  $${earn}`)
       }
       lines.push(`  Subtotal: ${(session.total_hours ?? 0).toFixed(1)}h  $${(session.total_pay ?? 0).toFixed(2)}`)
       lines.push('')
     }
-    return lines.join('\n').trim()
+    lines.push(`Total: ${grandHours.toFixed(1)}h  $${grandTotal.toFixed(2)}`)
+    return lines.join('\n')
   }
 
   function copyToClipboard() {
@@ -179,14 +180,12 @@ export default function ReportDetailPage() {
                 ? ((entry.duration_minutes / 60) * entry.hourly_rate).toFixed(2)
                 : '0.00'
               return (
-                <div key={entry.id} className="px-4 py-3 border-b border-gray-100 flex justify-between items-start">
+                <div key={entry.id} className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
                   <div>
                     <p className="text-sm text-gray-900">
-                      {formatTime(entry.started_at)} – {entry.stopped_at ? formatTime(entry.stopped_at) : '—'}
+                      {entry.duration_minutes ? formatDuration(entry.duration_minutes) : '—'}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {entry.duration_minutes ? formatDuration(entry.duration_minutes) : '—'} @ ${entry.hourly_rate}/hr
-                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">@ ${entry.hourly_rate}/hr</p>
                   </div>
                   <p className="text-sm font-medium text-gray-900">${earnings}</p>
                 </div>
