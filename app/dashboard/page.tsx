@@ -151,7 +151,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="body-text">Loading...</p>
       </div>
     )
   }
@@ -186,10 +186,10 @@ export default function DashboardPage() {
           <>
             {/* timer */}
             {activeEntry && (
-              <div className="bg-white rounded-xl p-6 text-center shadow-sm">
-                <p className="text-sm text-gray-500 mb-1">Clocked in</p>
-                <p className="text-4xl font-mono font-bold tracking-tight">{formatElapsed(elapsed)}</p>
-                <p className="text-sm text-gray-500 mt-1">@ ${activeEntry.hourly_rate}/hr</p>
+              <div className="card p-6 text-center">
+                <p className="muted-text mb-1">Clocked in</p>
+                <p className="text-4xl font-mono font-bold text-gray-900 tracking-tight">{formatElapsed(elapsed)}</p>
+                <p className="muted-text mt-1">@ ${activeEntry.hourly_rate}/hr</p>
               </div>
             )}
 
@@ -216,21 +216,21 @@ export default function DashboardPage() {
 
             {/* entries list */}
             {completedEntries.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm divide-y divide-gray-100">
+              <div className="card divide-y divide-gray-100">
                 {completedEntries.map(entry => (
                   <div key={entry.id} className="px-4 py-3 flex justify-between items-center">
                     <div>
-                      <p className="text-sm font-medium">{formatDuration(entry.duration_minutes!)}</p>
-                      <p className="text-xs text-gray-400">@ ${entry.hourly_rate}/hr</p>
+                      <p className="body-text font-medium">{formatDuration(entry.duration_minutes!)}</p>
+                      <p className="muted-text">@ ${entry.hourly_rate}/hr</p>
                     </div>
-                    <p className="text-sm font-medium">
+                    <p className="body-text font-medium">
                       ${((entry.duration_minutes! / 60) * entry.hourly_rate).toFixed(2)}
                     </p>
                   </div>
                 ))}
                 <div className="px-4 py-3 flex justify-between items-center bg-gray-50 rounded-b-xl">
-                  <p className="text-sm font-semibold">Total</p>
-                  <p className="text-sm font-semibold">${totalPay.toFixed(2)}</p>
+                  <p className="body-text font-semibold">Total</p>
+                  <p className="body-text font-semibold">${totalPay.toFixed(2)}</p>
                 </div>
               </div>
             )}

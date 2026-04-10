@@ -24,3 +24,25 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .card {
+    @apply bg-gray-100 rounded-xl shadow-xl;
+  }
+
+  .page-title {
+    @apply text-xl font-bold text-gray-900;
+  }
+
+  .body-text {
+    @apply text-sm text-gray-900;
+  }
+
+  .muted-text {
+    @apply text-xs text-gray-800;
+  }
+
+  .section-label {
+    @apply text-xs text-gray-800 uppercase tracking-wide;
+  }
+}

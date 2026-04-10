@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import PageHeader from '@/components/ui/PageHeader'
 
 type Session = {
   id: string
@@ -91,28 +92,17 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="body-text">Loading...</p>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-gray-50 pb-32">
-      {/* header */}
-      <div className="bg-white px-4 pt-8 pb-4 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <button onClick={() => router.back()} className="text-gray-500">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h1 className="text-xl font-bold text-gray-900">Sessions</h1>
-        </div>
-
-        {/* date filter */}
+      <PageHeader title="Sessions">
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="block text-xs text-gray-500 mb-1">From</label>
+            <label className="block muted-text mb-1">From</label>
             <input
               type="date"
               value={fromDate}
@@ -121,7 +111,7 @@ export default function ReportsPage() {
             />
           </div>
           <div className="flex-1">
-            <label className="block text-xs text-gray-500 mb-1">To</label>
+            <label className="block muted-text mb-1">To</label>
             <input
               type="date"
               value={toDate}
@@ -130,7 +120,7 @@ export default function ReportsPage() {
             />
           </div>
         </div>
-      </div>
+      </PageHeader>
 
       {/* list */}
       <div className="divide-y divide-gray-100 bg-white mt-2">

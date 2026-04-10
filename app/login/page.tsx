@@ -36,8 +36,8 @@ export default function LoginPage() {
     <PageShell title="TimePay" subtitle="Track your work hours">
       {sent ? (
         <div className="text-center space-y-2">
-          <p className="font-medium text-gray-900">Check your email</p>
-          <p className="text-sm text-gray-500">
+          <p className="body-text font-medium">Check your email</p>
+          <p className="body-text">
             We sent a sign-in link to <strong>{email}</strong>
           </p>
         </div>

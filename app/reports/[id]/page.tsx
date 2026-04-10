@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Button from '@/components/ui/Button'
+import PageHeader from '@/components/ui/PageHeader'
 
 type Report = {
   id: string
@@ -145,33 +146,24 @@ export default function ReportDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500 text-sm">Loading...</p>
+        <p className="body-text">Loading...</p>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-gray-50 pb-36">
-      {/* header */}
-      <div className="bg-white px-4 pt-8 pb-4 shadow-sm">
-        <div className="flex items-center gap-3 mb-2">
-          <button onClick={() => router.back()} className="text-gray-500">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h1 className="text-xl font-bold text-gray-900">Report</h1>
-        </div>
-        <p className="text-sm text-gray-500 ml-8">{formatDate(report!.created_at)}</p>
-      </div>
+      <PageHeader title="Report">
+        <p className="muted-text">{formatDate(report!.created_at)}</p>
+      </PageHeader>
 
       {/* sessions */}
       <div className="space-y-4 px-4 mt-4">
         {sessions.map(session => (
-          <div key={session.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div key={session.id} className="card overflow-hidden">
             {/* session date */}
             <div className="px-4 py-3 border-b border-gray-100">
-              <p className="text-sm font-semibold text-gray-900">{formatDate(session.started_at)}</p>
+              <p className="body-text font-semibold">{formatDate(session.started_at)}</p>
             </div>
 
             {/* entries */}
@@ -182,22 +174,22 @@ export default function ReportDetailPage() {
               return (
                 <div key={entry.id} className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
                   <div>
-                    <p className="text-sm text-gray-900">
+                    <p className="body-text">
                       {entry.duration_minutes ? formatDuration(entry.duration_minutes) : '—'}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">@ ${entry.hourly_rate}/hr</p>
+                    <p className="muted-text mt-0.5">@ ${entry.hourly_rate}/hr</p>
                   </div>
-                  <p className="text-sm font-medium text-gray-900">${earnings}</p>
+                  <p className="body-text font-medium">${earnings}</p>
                 </div>
               )
             })}
 
             {/* session subtotal */}
             <div className="px-4 py-3 bg-gray-50 flex justify-between items-center">
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Subtotal</p>
+              <p className="section-label">Subtotal</p>
               <div className="text-right">
-                <p className="text-sm font-semibold text-gray-900">${(session.total_pay ?? 0).toFixed(2)}</p>
-                <p className="text-xs text-gray-400">{(session.total_hours ?? 0).toFixed(1)}h</p>
+                <p className="body-text font-semibold">${(session.total_pay ?? 0).toFixed(2)}</p>
+                <p className="muted-text">{(session.total_hours ?? 0).toFixed(1)}h</p>
               </div>
             </div>
           </div>
